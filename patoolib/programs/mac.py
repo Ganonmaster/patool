@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2012-2015 Bastian Kleineidam
+# Copyright (C) 2012-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,15 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the MAC.exe program."""
-from .. import util
 
-def extract_ape (archive, compression, cmd, verbosity, interactive, outdir):
+from .. import fileutil
+
+
+def extract_ape(archive, compression, cmd, verbosity, interactive, outdir):
     """Decompress an APE archive to a WAV file."""
-    outfile = util.get_single_outfile(outdir, archive, extension=".wav")
+    outfile = fileutil.get_single_outfile(outdir, archive, extension=".wav")
     return [cmd, archive, outfile, '-d']
 
 
-def create_ape (archive, compression, cmd, verbosity, interactive, filenames):
+def create_ape(archive, compression, cmd, verbosity, interactive, filenames):
     """Compress a WAV file to an APE archive."""
     cmdlist = [cmd]
     cmdlist.extend(filenames)
@@ -31,6 +32,6 @@ def create_ape (archive, compression, cmd, verbosity, interactive, filenames):
     return cmdlist
 
 
-def test_ape (archive, compression, cmd, verbosity, interactive):
+def test_ape(archive, compression, cmd, verbosity, interactive):
     """Test an APE archive."""
     return [cmd, archive, '-v']

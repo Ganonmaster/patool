@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the arc program."""
+
 import os
 from ..util import PatoolError
 
@@ -24,11 +24,13 @@ def _add_password_to_options(options, password):
         return options
     if ' ' in password:
         raise PatoolError("Password for ARC can't contain spaces.")
-    options += 'g%s' % password
+    options += f'g{password}'
     return options
 
 
-def extract_arc (archive, compression, cmd, verbosity, interactive, outdir, password=None):
+def extract_arc(
+    archive, compression, cmd, verbosity, interactive, outdir, password=None
+):
     """Extract a ARC archive."""
     # Since extracted files will be placed in the current directory,
     # the cwd argument has to be the output directory.
@@ -37,7 +39,7 @@ def extract_arc (archive, compression, cmd, verbosity, interactive, outdir, pass
     return (cmdlist, {'cwd': outdir})
 
 
-def list_arc (archive, compression, cmd, verbosity, interactive, password=None):
+def list_arc(archive, compression, cmd, verbosity, interactive, password=None):
     """List a ARC archive."""
     cmdlist = [cmd]
     if verbosity > 1:
@@ -48,13 +50,21 @@ def list_arc (archive, compression, cmd, verbosity, interactive, password=None):
     return cmdlist
 
 
-def test_arc (archive, compression, cmd, verbosity, interactive, password=None):
+def test_arc(archive, compression, cmd, verbosity, interactive, password=None):
     """Test a ARC archive."""
     return [cmd, _add_password_to_options('t', password), archive]
 
 
-def create_arc (archive, compression, cmd, verbosity, interactive, filenames, password=None):
+def create_arc(
+    archive, compression, cmd, verbosity, interactive, filenames, password=None
+):
     """Create a ARC archive."""
     cmdlist = [cmd, _add_password_to_options('a', password), archive]
     cmdlist.extend(filenames)
     return cmdlist
+
+
+extract_freearc = extract_arc
+list_freearc = list_arc
+test_freearc = test_arc
+create_freearc = create_arc

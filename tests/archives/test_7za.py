@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2016 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,15 +12,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from . import ArchiveTest, Content
-from .. import needs_program
+"""Test the 7za program"""
 
-class Test7za (ArchiveTest):
+from . import ArchiveTest, Content
+from .. import needs_program, needs_codec
+
+
+class Test7za(ArchiveTest):
+    """Test class for the 7za program"""
 
     program = '7za'
 
     @needs_program(program)
-    def test_p7azip (self):
+    def test_7za(self):
+        """Run archive commands with archives that 7za supports."""
         self.archive_commands('t .7z')
         self.archive_commands('t .cb7')
         self.archive_commands('t.zip')
@@ -29,25 +33,31 @@ class Test7za (ArchiveTest):
         self.archive_list('t.txt.gz')
         self.archive_list('t.txt.bz2')
         self.archive_list('t.jar')
-        self.archive_list('t.txt.Z')
         self.archive_list('t.cab')
         self.archive_list('t.rpm')
         self.archive_extract('t.txt.gz', check=Content.Singlefile)
         self.archive_extract('t.txt.bz2', check=Content.Singlefile)
         self.archive_extract('t.jar', check=None)
-        self.archive_extract('t.txt.Z', check=Content.Singlefile)
         self.archive_extract('t.cab')
         self.archive_test('t.txt.gz')
         self.archive_test('t.txt.bz2')
         self.archive_test('t.jar')
-        self.archive_test('t.txt.Z')
         self.archive_test('t.cab')
         self.archive_create('t.txt.gz', check=Content.Singlefile)
         self.archive_create('t.txt.bz2', check=Content.Singlefile)
 
+    @needs_program(program)
+    @needs_codec(program, 'compress')
+    def test_7za_compress(self):
+        """Run archive commands with compress archives."""
+        self.archive_list('t.txt.Z')
+        self.archive_extract('t.txt.Z', check=Content.Singlefile)
+        self.archive_test('t.txt.Z')
+
     @needs_program('file')
     @needs_program(program)
-    def test_7za_file (self):
+    def test_7za_file(self):
+        """Run archive commands with renamed archives that 7za supports."""
         self.archive_commands('t.7z.foo', skip_create=True)
         self.archive_commands('t.cb7.foo', skip_create=True)
         self.archive_commands('t.zip.foo', skip_create=True)
@@ -55,16 +65,22 @@ class Test7za (ArchiveTest):
         self.archive_list('t.txt.gz.foo')
         self.archive_list('t.txt.bz2.foo')
         self.archive_list('t.jar.foo')
-        self.archive_list('t.txt.Z.foo')
         self.archive_list('t.cab.foo')
         self.archive_list('t.rpm.foo')
         self.archive_extract('t.txt.gz.foo', check=None)
         self.archive_extract('t.txt.bz2.foo', check=Content.Singlefile)
         self.archive_extract('t.jar.foo', check=None)
-        self.archive_extract('t.txt.Z.foo', check=Content.Singlefile)
         self.archive_extract('t.cab.foo')
         self.archive_test('t.txt.gz.foo')
         self.archive_test('t.txt.bz2.foo')
         self.archive_test('t.jar.foo')
-        self.archive_test('t.txt.Z.foo')
         self.archive_test('t.cab.foo')
+
+    @needs_program('file')
+    @needs_program(program)
+    @needs_codec(program, 'compress')
+    def test_7za_compress_file(self):
+        """Run archive commands with renamed compress archives."""
+        self.archive_list('t.txt.Z.foo')
+        self.archive_extract('t.txt.Z.foo', check=Content.Singlefile)
+        self.archive_test('t.txt.Z.foo')

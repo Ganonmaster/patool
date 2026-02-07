@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,20 +13,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the arj program."""
+
 from ..util import PatoolError
+
 
 def _get_password_switch(password):
     """Check password and return password switch for ARJ."""
     if ' ' in password:
         raise PatoolError("Password for ARJ can't contain spaces.")
-    return '-g%s' % password
+    return f'-g{password}'
+
 
 def _maybe_add_password(cmdlist, password):
     if password:
         cmdlist.append(_get_password_switch(password))
 
 
-def extract_arj (archive, compression, cmd, verbosity, interactive, outdir, password=None):
+def extract_arj(
+    archive, compression, cmd, verbosity, interactive, outdir, password=None
+):
     """Extract an ARJ archive."""
     cmdlist = [cmd, 'x', '-r']
     _maybe_add_password(cmdlist, password)
@@ -37,7 +41,7 @@ def extract_arj (archive, compression, cmd, verbosity, interactive, outdir, pass
     return cmdlist
 
 
-def list_arj (archive, compression, cmd, verbosity, interactive, password=None):
+def list_arj(archive, compression, cmd, verbosity, interactive, password=None):
     """List an ARJ archive."""
     cmdlist = [cmd]
     _maybe_add_password(cmdlist, password)
@@ -51,7 +55,7 @@ def list_arj (archive, compression, cmd, verbosity, interactive, password=None):
     return cmdlist
 
 
-def test_arj (archive, compression, cmd, verbosity, interactive, password=None):
+def test_arj(archive, compression, cmd, verbosity, interactive, password=None):
     """Test an ARJ archive."""
     cmdlist = [cmd, 't', '-r']
     _maybe_add_password(cmdlist, password)
@@ -61,7 +65,9 @@ def test_arj (archive, compression, cmd, verbosity, interactive, password=None):
     return cmdlist
 
 
-def create_arj (archive, compression, cmd, verbosity, interactive, filenames, password=None):
+def create_arj(
+    archive, compression, cmd, verbosity, interactive, filenames, password=None
+):
     """Create an ARJ archive."""
     cmdlist = [cmd, 'a', '-r']
     _maybe_add_password(cmdlist, password)

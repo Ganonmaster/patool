@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2013-2015 Bastian Kleineidam
+# Copyright (C) 2013-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,15 +12,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""Test patool list command"""
+
 import unittest
 import os
-import sys
-from patoolib.util import run_checked
-from . import datadir, needs_program, patool_cmd
+from patoolib import cli
+from . import datadir, needs_program
 
-class ArchiveListTest (unittest.TestCase):
+
+class ArchiveListTest(unittest.TestCase):
+    """Test class for patool list command"""
 
     @needs_program('tar')
     def test_list(self):
+        """Run cli function to list a TAR archive."""
         archive = os.path.join(datadir, "t.tar")
-        run_checked([sys.executable, patool_cmd, "-vv", "--non-interactive", "list", archive])
+        args = ["-vv", "--non-interactive", "list", archive]
+        cli.main(args=args)

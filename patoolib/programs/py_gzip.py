@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2012-2015 Bastian Kleineidam
+# Copyright (C) 2012-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,15 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the gzip Python module."""
+
 # now gzip refers to the Python standard module, not the local one
 import gzip
-from .. import util
+from .. import fileutil, util
 
-READ_SIZE_BYTES = 1024*1024
+READ_SIZE_BYTES = 1024 * 1024
 
-def extract_gzip (archive, compression, cmd, verbosity, interactive, outdir):
+
+def extract_gzip(archive, compression, cmd, verbosity, interactive, outdir):
     """Extract a GZIP archive with the gzip Python module."""
-    targetname = util.get_single_outfile(outdir, archive)
+    targetname = fileutil.get_single_outfile(outdir, archive)
     try:
         with gzip.GzipFile(archive) as gzipfile:
             with open(targetname, 'wb') as targetfile:
@@ -31,12 +32,12 @@ def extract_gzip (archive, compression, cmd, verbosity, interactive, outdir):
                     targetfile.write(data)
                     data = gzipfile.read(READ_SIZE_BYTES)
     except Exception as err:
-        msg = "error extracting %s to %s" % (archive, targetname)
+        msg = f"error extracting {archive} to {targetname}"
         raise util.PatoolError(msg) from err
-    return None
+    return
 
 
-def create_gzip (archive, compression, cmd, verbosity, interactive, filenames):
+def create_gzip(archive, compression, cmd, verbosity, interactive, filenames):
     """Create a GZIP archive with the gzip Python module."""
     if len(filenames) > 1:
         raise util.PatoolError('multi-file compression not supported in Python gzip')
@@ -49,6 +50,5 @@ def create_gzip (archive, compression, cmd, verbosity, interactive, filenames):
                     gzipfile.write(data)
                     data = srcfile.read(READ_SIZE_BYTES)
     except Exception as err:
-        msg = "error creating %s" % (archive, )
-        raise util.PatoolError(msg) from err
-    return None
+        raise util.PatoolError(f"error creating {archive}") from err
+    return

@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,14 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the xz program."""
+
 from . import extract_singlefile_standard, test_singlefile_standard
-from .. import util
+from .. import fileutil, util
 
 
 extract_xz = extract_singlefile_standard
 test_xz = test_singlefile_standard
 
-def list_xz (archive, compression, cmd, verbosity, interactive):
+
+def list_xz(archive, compression, cmd, verbosity, interactive):
     """List a XZ archive."""
     cmdlist = [cmd]
     cmdlist.append('-l')
@@ -36,7 +37,7 @@ def create_xz(archive, compression, cmd, verbosity, interactive, filenames):
     cmdlist = [util.shell_quote(cmd)]
     if verbosity > 1:
         cmdlist.append('-v')
-    cmdlist.extend(['-c', '-9', '--'])
+    cmdlist.extend(['-c', '--'])
     cmdlist.extend([util.shell_quote(x) for x in filenames])
     cmdlist.extend(['>', util.shell_quote(archive)])
     return (cmdlist, {'shell': True})
@@ -47,9 +48,10 @@ def extract_lzma(archive, compression, cmd, verbosity, interactive, outdir):
     cmdlist = [util.shell_quote(cmd), '--format=lzma']
     if verbosity > 1:
         cmdlist.append('-v')
-    outfile = util.get_single_outfile(outdir, archive)
-    cmdlist.extend(['-c', '-d', '--', util.shell_quote(archive), '>',
-        util.shell_quote(outfile)])
+    outfile = fileutil.get_single_outfile(outdir, archive)
+    cmdlist.extend(
+        ['-c', '-d', '--', util.shell_quote(archive), '>', util.shell_quote(outfile)]
+    )
     return (cmdlist, {'shell': True})
 
 
@@ -67,7 +69,7 @@ def create_lzma(archive, compression, cmd, verbosity, interactive, filenames):
     cmdlist = [util.shell_quote(cmd), '--format=lzma']
     if verbosity > 1:
         cmdlist.append('-v')
-    cmdlist.extend(['-c', '-9', '--'])
+    cmdlist.extend(['-c', '--'])
     cmdlist.extend([util.shell_quote(x) for x in filenames])
     cmdlist.extend(['>', util.shell_quote(archive)])
     return (cmdlist, {'shell': True})

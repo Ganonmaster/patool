@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2013-2015 Bastian Kleineidam
+# Copyright (C) 2013-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,23 +12,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""Test patool create command."""
+
 import unittest
 import os
-import sys
-import shutil
-from patoolib import util
-from . import basedir, datadir, needs_program, patool_cmd
+from patoolib import cli, fileutil
+from . import basedir, datadir, needs_program
 
-class ArchiveCreateTest (unittest.TestCase):
+
+class ArchiveCreateTest(unittest.TestCase):
+    """Test class for patool create command."""
 
     @needs_program('7z')
     def test_create(self):
-        tmpdir = util.tmpdir(dir=basedir)
+        """Run cli function to create a 7Z archive."""
+        tmpdir = fileutil.tmpdir(dir=basedir)
         try:
             files = [os.path.join(datadir, "t"), os.path.join(datadir, "t.txt")]
             archive = os.path.join(tmpdir, "t.7z")
-            cmd = [sys.executable, patool_cmd, "-vv", "--non-interactive", "create", archive]
-            cmd.extend(files)
-            util.run_checked(cmd)
+            args = ["-vv", "--non-interactive", "create", archive]
+            args.extend(files)
+            cli.main(args=args)
         finally:
-            shutil.rmtree(tmpdir)
+            fileutil.rmtree(tmpdir)

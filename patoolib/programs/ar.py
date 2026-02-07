@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,9 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the ar program."""
+
 import os
 
-def extract_ar (archive, compression, cmd, verbosity, interactive, outdir):
+
+def extract_ar(archive, compression, cmd, verbosity, interactive, outdir):
     """Extract a AR archive."""
     opts = 'x'
     if verbosity > 1:
@@ -24,16 +25,19 @@ def extract_ar (archive, compression, cmd, verbosity, interactive, outdir):
     cmdlist = [cmd, opts, os.path.abspath(archive)]
     return (cmdlist, {'cwd': outdir})
 
-def list_ar (archive, compression, cmd, verbosity, interactive):
+
+def list_ar(archive, compression, cmd, verbosity, interactive):
     """List a AR archive."""
     opts = 't'
     if verbosity > 1:
         opts += 'v'
     return [cmd, opts, archive]
 
+
 test_ar = list_ar
 
-def create_ar (archive, compression, cmd, verbosity, interactive, filenames):
+
+def create_ar(archive, compression, cmd, verbosity, interactive, filenames):
     """Create a AR archive."""
     opts = 'rc'
     if verbosity > 1:

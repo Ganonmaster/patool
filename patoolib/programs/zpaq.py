@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2014-2015 Bastian Kleineidam
+# Copyright (C) 2014-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the zpaq program."""
+
 import os
+
 
 def extract_zpaq(archive, compression, cmd, verbosity, interactive, outdir):
     """Extract a ZPAQ archive."""
@@ -33,6 +34,7 @@ def create_zpaq(archive, compression, cmd, verbosity, interactive, filenames):
     cmdlist.extend(filenames)
     cmdlist.extend(['-method', '4'])
     return cmdlist
+
 
 # zpaq has no separate test mode, so use listing instead
 test_zpaq = list_zpaq

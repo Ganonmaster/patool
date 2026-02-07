@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,20 +12,34 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from .. import util
+"""Standard archive functions for singlefile archives."""
 
-def extract_singlefile_standard (archive, compression, cmd, verbosity, interactive, outdir):
+from collections.abc import Sequence
+from .. import fileutil, util
+
+
+def extract_singlefile_standard(
+    archive: str,
+    compression: str | None,
+    cmd: str,
+    verbosity: int,
+    interactive: bool,
+    outdir: str,
+) -> tuple[Sequence[str], dict[str, bool]]:
     """Standard routine to extract a singlefile archive (like gzip)."""
     cmdlist = [util.shell_quote(cmd)]
     if verbosity > 1:
         cmdlist.append('-v')
-    outfile = util.get_single_outfile(outdir, archive)
-    cmdlist.extend(['-c', '-d', '--', util.shell_quote(archive), '>',
-        util.shell_quote(outfile)])
+    outfile = fileutil.get_single_outfile(outdir, archive)
+    cmdlist.extend(
+        ['-c', '-d', '--', util.shell_quote(archive), '>', util.shell_quote(outfile)]
+    )
     return (cmdlist, {'shell': True})
 
 
-def test_singlefile_standard (archive, compression, cmd, verbosity, interactive):
+def test_singlefile_standard(
+    archive: str, compression: str | None, cmd: str, verbosity: int, interactive: bool
+) -> Sequence[str]:
     """Standard routine to test a singlefile archive (like gzip)."""
     cmdlist = [cmd]
     if verbosity > 1:
@@ -35,7 +48,14 @@ def test_singlefile_standard (archive, compression, cmd, verbosity, interactive)
     return cmdlist
 
 
-def create_singlefile_standard (archive, compression, cmd, verbosity, interactive, filenames):
+def create_singlefile_standard(
+    archive: str,
+    compression: str | None,
+    cmd: str,
+    verbosity: int,
+    interactive: bool,
+    filenames: Sequence[str],
+) -> tuple[Sequence[str], dict[str, bool]]:
     """Standard routine to create a singlefile archive (like gzip)."""
     cmdlist = [util.shell_quote(cmd)]
     if verbosity > 1:

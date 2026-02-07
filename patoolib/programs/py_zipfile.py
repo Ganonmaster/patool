@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2012-2015 Bastian Kleineidam
+# Copyright (C) 2012-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,11 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the zipfile Python module."""
+
 from .. import util
 import zipfile
 import os
 
-READ_SIZE_BYTES = 1024*1024
+READ_SIZE_BYTES = 1024 * 1024
 
 
 def list_zip(archive, compression, cmd, verbosity, interactive, password=None):
@@ -31,13 +31,16 @@ def list_zip(archive, compression, cmd, verbosity, interactive, password=None):
                 if verbosity >= 0:
                     print(name)
     except Exception as err:
-        msg = "error listing %s" % (archive, )
-        raise util.PatoolError(msg) from err
-    return None
+        raise util.PatoolError(f"error listing {archive}") from err
+    return
+
 
 test_zip = list_zip
 
-def extract_zip(archive, compression, cmd, verbosity, interactive, outdir, password=None):
+
+def extract_zip(
+    archive, compression, cmd, verbosity, interactive, outdir, password=None
+):
     """Extract a ZIP archive with the zipfile Python module."""
     try:
         if password:
@@ -45,9 +48,8 @@ def extract_zip(archive, compression, cmd, verbosity, interactive, outdir, passw
         with zipfile.ZipFile(archive) as zfile:
             zfile.extractall(outdir, pwd=password)
     except Exception as err:
-        msg = "error extracting %s" % (archive, )
-        raise util.PatoolError(msg) from err
-    return None
+        raise util.PatoolError(f"error extracting {archive}") from err
+    return
 
 
 def create_zip(archive, compression, cmd, verbosity, interactive, filenames):
@@ -60,14 +62,13 @@ def create_zip(archive, compression, cmd, verbosity, interactive, filenames):
                 else:
                     zfile.write(filename)
     except Exception as err:
-        msg = "error creating %s" % (archive, )
-        raise util.PatoolError(msg) from err
-    return None
+        raise util.PatoolError(f"error creating {archive}") from err
+    return
 
 
-def write_directory (zfile, directory):
+def write_directory(zfile, directory):
     """Write recursively all directories and filenames to zipfile instance."""
-    for dirpath, dirnames, filenames in os.walk(directory): # noqa: B007
+    for dirpath, dirnames, filenames in os.walk(directory):  # noqa: B007
         zfile.write(dirpath)
         for filename in filenames:
             zfile.write(os.path.join(dirpath, filename))

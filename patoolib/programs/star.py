@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,28 +13,54 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the star program."""
-from .tar import add_tar_opts as add_star_opts
 
-def extract_tar (archive, compression, cmd, verbosity, interactive, outdir):
+import functools
+
+
+def extract_tar(archive, compression, cmd, verbosity, interactive, outdir):
     """Extract a TAR archive."""
     cmdlist = [cmd, '-x']
-    add_star_opts(cmdlist, compression, verbosity)
-    cmdlist.extend(['-C', outdir, 'file=%s' % archive])
+    cmdlist.extend(get_star_opts(cmd, compression, verbosity))
+    cmdlist.extend(['-C', outdir, f"file={archive}"])
     return cmdlist
 
-def list_tar (archive, compression, cmd, verbosity, interactive):
+
+def list_tar(archive, compression, cmd, verbosity, interactive):
     """List a TAR archive."""
     cmdlist = [cmd, '-n']
-    add_star_opts(cmdlist, compression, verbosity)
-    cmdlist.append("file=%s" % archive)
+    cmdlist.extend(get_star_opts(cmd, compression, verbosity))
+    cmdlist.append(f"file={archive}")
     return cmdlist
+
 
 test_tar = list_tar
 
-def create_tar (archive, compression, cmd, verbosity, interactive, filenames):
+
+def create_tar(archive, compression, cmd, verbosity, interactive, filenames):
     """Create a TAR archive."""
     cmdlist = [cmd, '-c']
-    add_star_opts(cmdlist, compression, verbosity)
-    cmdlist.append("file=%s" % archive)
+    cmdlist.extend(get_star_opts(cmd, compression, verbosity))
+    cmdlist.append(f"file={archive}")
     cmdlist.extend(filenames)
+    return cmdlist
+
+
+@functools.cache
+def get_star_opts(cmd, compression, verbosity):
+    """Add tar options to cmdlist."""
+    cmdlist = []
+    if compression == 'gzip':
+        cmdlist.append('-z')
+    elif compression == 'compress':
+        cmdlist.append('-Z')
+    elif compression == 'bzip2':
+        cmdlist.append('-j')
+    elif compression in ('lzma', 'xz', 'lzip'):
+        # use the compression name as program name since
+        # tar is picky which programs it can use
+        program = compression
+        # set compression program
+        cmdlist.extend(['compress-program=', program])
+    if verbosity > 1:
+        cmdlist.append('-v')
     return cmdlist

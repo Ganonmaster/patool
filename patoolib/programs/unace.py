@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,17 +14,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the unace program."""
 
-def extract_ace (archive, compression, cmd, verbosity, interactive, outdir, password=None):
+import os
+
+
+def extract_ace(
+    archive, compression, cmd, verbosity, interactive, outdir, password=None
+):
     """Extract an ACE archive."""
     cmdlist = [cmd, 'x']
-    if not outdir.endswith('/'):
-        outdir += '/'
+    if not outdir.endswith(os.sep):
+        outdir += os.sep
     if password:
-        cmdlist.append('-p%s' % password)
+        cmdlist.append(f'-p{password}')
     cmdlist.extend([archive, outdir])
     return cmdlist
 
-def list_ace (archive, compression, cmd, verbosity, interactive, password=None):
+
+def list_ace(archive, compression, cmd, verbosity, interactive, password=None):
     """List an ACE archive."""
     cmdlist = [cmd]
     if verbosity > 1:
@@ -33,14 +38,15 @@ def list_ace (archive, compression, cmd, verbosity, interactive, password=None):
     else:
         cmdlist.append('l')
     if password:
-        cmdlist.append('-p%s' % password)
+        cmdlist.append(f'-p{password}')
     cmdlist.append(archive)
     return cmdlist
 
-def test_ace (archive, compression, cmd, verbosity, interactive, password=None):
+
+def test_ace(archive, compression, cmd, verbosity, interactive, password=None):
     """Test an ACE archive."""
     cmdlist = [cmd, 't']
     if password:
-        cmdlist.append('-p%s' % password)
+        cmdlist.append(f'-p{password}')
     cmdlist.append(archive)
     return cmdlist

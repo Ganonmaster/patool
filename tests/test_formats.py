@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,12 +12,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""Test patool formats command."""
+
 import unittest
-import sys
-from patoolib.util import run_checked
-from . import patool_cmd
+from patoolib import cli
 
-class TestFormats (unittest.TestCase):
 
-    def test_list_formats (self):
-        run_checked([sys.executable, patool_cmd, "-vv", "--non-interactive", 'formats'])
+class TestFormats(unittest.TestCase):
+    """Test class for patool formats command."""
+
+    def test_list_formats(self):
+        """Run cli function with formats command."""
+        args = ["-vv", "--non-interactive", 'formats']
+        cli.main(args=args)

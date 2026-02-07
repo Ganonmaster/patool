@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,19 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the rar program."""
+
 import os
 
-def extract_rar (archive, compression, cmd, verbosity, interactive, outdir, password=None):
+
+def extract_rar(
+    archive, compression, cmd, verbosity, interactive, outdir, password=None
+):
     """Extract a RAR archive."""
     cmdlist = [cmd, 'x']
     if not interactive:
         cmdlist.extend(['-p-', '-y'])
     if password:
-        cmdlist.append('-p%s' % password)
-    cmdlist.extend(['--', os.path.abspath(archive)])
+        cmdlist.append(f'-p{password}')
+    cmdlist.extend(['-kb', '-or', '--', os.path.abspath(archive)])
     return (cmdlist, {'cwd': outdir})
 
-def list_rar (archive, compression, cmd, verbosity, interactive, password=None):
+
+def list_rar(archive, compression, cmd, verbosity, interactive, password=None):
     """List a RAR archive."""
     cmdlist = [cmd]
     if verbosity > 1:
@@ -36,27 +40,31 @@ def list_rar (archive, compression, cmd, verbosity, interactive, password=None):
     if not interactive:
         cmdlist.extend(['-p-', '-y'])
     if password:
-        cmdlist.append('-p%s' % password)
+        cmdlist.append(f'-p{password}')
     cmdlist.extend(['--', archive])
     return cmdlist
 
-def test_rar (archive, compression, cmd, verbosity, interactive, password=None):
+
+def test_rar(archive, compression, cmd, verbosity, interactive, password=None):
     """Test a RAR archive."""
     cmdlist = [cmd, 't']
     if not interactive:
         cmdlist.extend(['-p-', '-y'])
     if password:
-        cmdlist.append('-p%s' % password)
+        cmdlist.append(f'-p{password}')
     cmdlist.extend(['--', archive])
     return cmdlist
 
-def create_rar (archive, compression, cmd, verbosity, interactive, filenames, password=None):
+
+def create_rar(
+    archive, compression, cmd, verbosity, interactive, filenames, password=None
+):
     """Create a RAR archive."""
     cmdlist = [cmd, 'a']
     if not interactive:
         cmdlist.append('-y')
     if password:
-        cmdlist.append('-p%s' % password)
+        cmdlist.append(f'-p{password}')
     cmdlist.extend(['-r', '-m5', '--', archive])
     cmdlist.extend(filenames)
     return cmdlist

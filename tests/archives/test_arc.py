@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,24 +12,35 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""Test the arc program"""
+
 from . import ArchiveTest, Content
-from .. import needs_program
+from .. import needs_program, needs_codec
+
 
 class TestArc(ArchiveTest):
+    """Test class for the arc program"""
 
     program = 'arc'
 
     @needs_program(program)
+    @needs_codec(program, 'arc')
     def test_arc(self):
+        """Run archive commands with ARC archive."""
         self.archive_commands(self.filename + '.arc', check=Content.Multifile)
 
     @needs_program('file')
     @needs_program(program)
+    @needs_codec(program, 'arc')
     def test_arc_file(self):
-        self.archive_commands(self.filename + '.arc.foo', check=Content.Multifile, skip_create=True)
+        """Run archive commands with renamed ARC archive."""
+        self.archive_commands(
+            self.filename + '.arc.foo', check=Content.Multifile, skip_create=True
+        )
 
 
 class TestArcPassword(TestArc):
+    """Test class for the arc program with password protected archives"""
 
     password = 'thereisnotry'
     filename = 'p'

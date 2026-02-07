@@ -1,7 +1,9 @@
 # generated python files
-*.pyc
-*.pyo
 __pycache__
+/.pytest_cache
+/.ruff_cache
+/uv.lock
+/.venv
 
 # build and dist dirs
 /build
@@ -10,10 +12,11 @@ __pycache__
 /MANIFEST
 
 # local files
-/_patool_configdata.py
 /patool.egg-info/
+# configuration for direnv(1)
+/.envrc
 
 # local development files
-/todo
-/testresults.txt
+/bin
 /.python-version
+/tests/Unpack_*/

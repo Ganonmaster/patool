@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2013-2015 Bastian Kleineidam
+# Copyright (C) 2013-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,18 +12,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""Test the zopfli program"""
+
 from . import ArchiveTest, Content
 from .. import needs_program
 
+
 class TestZopfli(ArchiveTest):
+    """Test class for the zopfli program"""
 
     program = 'zopfli'
 
     @needs_program(program)
     def test_zopfli(self):
-        self.archive_extract('t.txt.gz', check=Content.Singlefile)
-
-    @needs_program('file')
-    @needs_program(program)
-    def test_zopfli_file(self):
-        self.archive_extract('t.txt.gz.foo', check=Content.Singlefile)
+        """Create a GZIP archive with zopfli."""
+        self.archive_create('t.txt.gz', check=Content.Singlefile)

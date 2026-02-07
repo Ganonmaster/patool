@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,19 +12,30 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""Test the pigz program"""
+
 from . import ArchiveTest, Content
 from .. import needs_program
 
-class TestPigz (ArchiveTest):
+
+class TestPigz(ArchiveTest):
+    """Test class for the pigz program"""
 
     program = 'pigz'
 
     @needs_program(program)
-    def test_pigz (self):
+    def test_pigz(self):
+        """Run archive commands with GZIP archive."""
         self.archive_commands('t.txt.gz', check=Content.Singlefile)
 
     @needs_program('file')
     @needs_program(program)
-    def test_pigz_file (self):
-        self.archive_commands('t.txt.gz.foo', check=Content.Singlefile,
-          skip_create=True, skip_test=True)
+    def test_pigz_file(self):
+        """Run archive commands with renamed GZIP archive."""
+        self.archive_commands(
+            't.txt.gz.foo', check=Content.Singlefile, skip_create=True, skip_test=True
+        )
+
+    def get_expected_singlefile_output(self, archive):
+        """Pigz restores the original filename for .gz files"""
+        return "t.txt"

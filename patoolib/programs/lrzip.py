@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2015 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,19 +13,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the lrzip program."""
-import os
-from .. import util
 
-def extract_lrzip (archive, compression, cmd, verbosity, interactive, outdir):
+import os
+from .. import fileutil
+
+
+def extract_lrzip(archive, compression, cmd, verbosity, interactive, outdir):
     """Extract a LRZIP archive."""
     cmdlist = [cmd, '-d']
     if verbosity > 1:
         cmdlist.append('-v')
-    outfile = util.get_single_outfile(outdir, archive)
+    outfile = fileutil.get_single_outfile(outdir, archive)
     cmdlist.extend(["-o", outfile, os.path.abspath(archive)])
     return cmdlist
 
-def test_lrzip (archive, compression, cmd, verbosity, interactive):
+
+def test_lrzip(archive, compression, cmd, verbosity, interactive):
     """Test a LRZIP archive."""
     cmdlist = [cmd, '-t']
     if verbosity > 1:
@@ -34,7 +36,8 @@ def test_lrzip (archive, compression, cmd, verbosity, interactive):
     cmdlist.append(archive)
     return cmdlist
 
-def create_lrzip (archive, compression, cmd, verbosity, interactive, filenames):
+
+def create_lrzip(archive, compression, cmd, verbosity, interactive, filenames):
     """Create a LRZIP archive."""
     cmdlist = [cmd, '-o', archive]
     if verbosity > 1:

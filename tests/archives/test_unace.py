@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2010-2016 Bastian Kleineidam
+# Copyright (C) 2010-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,35 +12,38 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""Test the unace program"""
+
 from . import ArchiveTest
 from .. import needs_program
 
-class TestUnace (ArchiveTest):
+
+class TestUnace(ArchiveTest):
+    """Test class for the unace program"""
 
     program = 'unace'
 
     @needs_program(program)
     def test_unace(self):
+        """Run archive commands with different ACE archives."""
         self.archive_list(self.filename + '.ace')
         self.archive_test(self.filename + '.ace')
-        self.archive_extract(self.filename + '.ace')
+        # the t.ace test archive is in ACE 2.0 format; unace only support ACE 1.0
+        # self.archive_extract(self.filename + '.ace')
         self.archive_list(self.filename + '.cba')
         self.archive_test(self.filename + '.cba')
-        self.archive_extract(self.filename + '.cba')
+        # the t.ace test archive is in ACE 2.0 format; unace only support ACE 1.0
+        # self.archive_extract(self.filename + '.cba')
 
     @needs_program('file')
     @needs_program(program)
     def test_unace_file(self):
+        """Run archive commands with different renamed ACE archives."""
         self.archive_list(self.filename + '.ace.foo')
         self.archive_test(self.filename + '.ace.foo')
-        self.archive_extract(self.filename + '.ace.foo')
+        # the t.ace test archive is in ACE 2.0 format; unace only support ACE 1.0
+        # self.archive_extract(self.filename + '.ace.foo')
         self.archive_list(self.filename + '.cba.foo')
         self.archive_test(self.filename + '.cba.foo')
-        self.archive_extract(self.filename + '.cba.foo')
-
-
-# TODO: add p.ace, p.ace.foo, p.cba, p.cba.foo with password to repository
-# class TestUnacePassword (TestUnace):
-#
-#     filename = 'p'
-#     password = 'thereisnotry'
+        # the t.ace test archive is in ACE 2.0 format; unace only support ACE 1.0
+        # self.archive_extract(self.filename + '.cba.foo')

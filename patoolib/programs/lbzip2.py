@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (C) 2012 Bastian Kleineidam
+# Copyright (C) 2012-2023 Bastian Kleineidam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Archive commands for the pbzip2 program."""
+
 # bzip2 and lbzip2 are compatible
 # ruff: noqa: F401
 from .bzip2 import extract_bzip2, test_bzip2, create_bzip2
